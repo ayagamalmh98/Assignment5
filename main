@@ -1,0 +1,76 @@
+package eg.edu.alexu.csd.datastructure.stack_01_;
+
+import java.util.Scanner;
+
+public class APPP {
+
+	public static void main(String[] args) {
+
+		exp x=new exp();
+		String g=x.infixToPostfix("((((1*(2+3))-3)+4)*5)");
+	
+		 int a=x.evaluate(g);
+		 
+		 //System.out.println("qq="+qq);
+		
+	Stack s=new Stack();
+	System.out.println("Choose an action\nEnter -1 to finish\n1-push in stack\n2-pop from stack\n3-peek \n4-check if empty\n5-know the size\n6-convert infix to postfix\n7-evaluate postfixexpression");
+	Scanner scan =new Scanner(System.in);
+	 
+	
+	 
+	
+	int val=scan.nextInt(); String r=new String();
+	 String rr=new String();
+	
+	
+	while (val!=-1) {
+		if (val==1) {System.out.println("Enter the value"); int q=scan.nextInt(); s.push(q); System.out.println("The stack:"); }
+		if (val==2) { int q=(int)s.pop(); System.out.println("The poped value is "+q);}
+		if (val==3) {int q; q=(int)s.peek(); System.out.println("the peeked value is "+q); }
+		if (val==4) { Boolean q=s.isEmpty(); System.out.println(q); }
+		if (val==5) {int q=s.size(); System.out.println("The size is "+q); }
+		if (val==6) { System.out.println("Enter the expression :)");  
+		String ss = scan.next();
+		int dd=x.check(ss); 
+		
+		if (dd!=1) {
+			System.out.println("Not valid input !\nEnter another valid one ");
+			ss = scan.next(); dd=x.check(ss);
+			while (dd!=1) {
+				System.out.println("Not valid input !\nEnter another valid one ");
+				ss = scan.next();
+				dd=x.check(ss);
+				
+				
+			}
+		}
+		 r=x.infixToPostfix(ss);
+		
+		
+		
+		
+			
+		}
+		if (val==7) {  
+		System.out.println("Enter the infix expression");
+		String ss = scan.next();  r=x.infixToPostfix(ss); int res=x.evaluate(r);
+		System.out.println("the integer value = "+res);
+		
+			
+		}
+	
+	
+
+	
+	
+	
+		
+	
+		System.out.println("Choose an action\nEnter -1..etc"); val=scan.nextInt();
+	
+			}
+
+	}
+
+}
