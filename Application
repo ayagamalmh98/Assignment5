@@ -1,0 +1,240 @@
+package eg.edu.alexu.csd.datastructure.stack_01_;
+
+public class exp {
+	/**
+	* Evaluate a postfix numeric expression, with a single space separator
+	*
+	* @param expression
+	* 		postfix expression
+	* @return 
+	* 		the expression evaluated value
+	*/
+	public int evaluate(String expression) {
+		Stack s=new Stack();
+		char[] aa=expression.toCharArray(); int q=0;
+		for (int i=0;i<aa.length;i++) { 
+			if (Character.isDigit(aa[i])) { int x=0; int y=0; x=(int)aa[i]-48;
+			for (int j=i+1;j<aa.length;j++) {
+				if (Character.isDigit(aa[j]))  {
+					q++;    y=(int)aa[j]-48;
+					x=x*10+y; aa[i]=(char)x; aa[j]='.';
+					
+						  }
+				else break;
+			}
+				
+				
+			
+		}		
+			
+		}
+			char[] a=new char[aa.length-q];  int qa=0;
+			for (int i=0;i<aa.length;i++) {
+				if (aa[i]!='.')
+					a[qa++]=aa[i]; }
+		
+		
+		
+		for ( int i=0;i<a.length;i++) { int cc=0;
+			if (Character.isDigit(a[i]) ){
+					float x=Character.getNumericValue(a[i]);
+				s.push(x);   }
+			/*
+				if (Character.isDigit(a[i])&&!(Character.isDigit(a[i+1]))) {
+					s.push((float)Character.getNumericValue(a[i])); }
+				if (Character.isDigit(a[i])&&(Character.isDigit(a[i+1])&&Character.isDigit(a[i+2]))) {
+					float x=Character.getNumericValue(a[i]); float y=Character.getNumericValue(a[i+1]);
+					float z=Character.getNumericValue(a[i+2]);
+					s.push(x*100+y*10+z);  cc++;
+					}
+					*/
+		
+			
+			
+			
+			if (a[i]=='+') {
+				float x=(float)s.pop();
+				float y=(float)s.pop();
+				
+				s.push(x+y);
+			}
+			if (a[i]=='-') {
+				if (s.top.next==null) { float x=(float)s.pop(); s.push((-x)); }
+				else {
+					float x=(float)s.pop();
+				float y=(float)s.pop();	
+				s.push(y-x); }
+					
+					
+				
+				
+			}
+			if (a[i]=='*') {
+				float x=(float)s.pop();
+				float y=(float)s.pop();	
+				s.push(x*y);		
+			}
+			if (a[i]=='/') {
+				float x=(float)s.pop();
+				float y=(float)s.pop();
+				
+				s.push(y/x);
+				
+			}
+			
+				i=i+cc;
+			
+		}
+		System.out.println("the floating value ="+s.peek());
+		
+		int dd= Math.round((float)s.pop());
+		return dd;
+	}
+	/**
+	 * it ranks the precedence of operations
+	 * @param ch
+	 * 		represents a symbol for the operation 
+	 * @return
+	 * 		 number express its precedence
+	 */
+	public int prec(Object ch) 
+    { 
+        if ((char)ch=='+'||(char)ch=='-') 
+            return 1; 
+        if ((char)ch=='/'||(char)ch=='*') 
+            return 2;
+        if ((char)ch=='^') 
+            return 3;
+       
+     
+         
+         
+        
+        return -1; 
+    } 
+	/**
+	* Takes a symbolic/numeric infix expression as input and converts it to
+	* postfix notation. There is no assumption on spaces between terms or the
+	* length of the term (e.g., two digits symbolic or numeric term)
+	*
+	* @param expression
+	* 		infix expression
+	* @return
+	* 		 postfix expression
+	*/
+	public String infixToPostfix(String expression) {
+		String s=new String();
+		Stack ss=new Stack();
+		char[] aa=expression.toCharArray(); int q=0;
+		
+		for (int i=0;i<aa.length;i++) { 
+			if (Character.isDigit(aa[i])) { int x=0; int y=0; x=(int)aa[i]-48;
+			for (int j=i+1;j<aa.length;j++) {
+				if (Character.isDigit(aa[j]))  {
+					q++;    y=(int)aa[j]-48;
+					x=x*10+y; aa[i]=(char)x; aa[j]='.';
+					
+						  }
+				else break;
+			}
+				
+				
+			
+		}		
+			
+		}
+			char[] a=new char[aa.length-q];  int qa=0;
+			for (int i=0;i<aa.length;i++) {
+				if (aa[i]!='.')
+					a[qa++]=aa[i];
+			} 
+		
+		
+		for (int i=0;i<a.length;i++) {
+			
+			 if (a[i]=='(') ss.push(a[i]);
+			 else if (a[i]=='*'||a[i]=='/'||a[i]=='+'||a[i]=='-'||a[i]=='^') {
+				 int p=prec(a[i]);  
+				 
+			
+				 if (ss.top!=null) {
+				while (true){ 
+				 if (ss.top!=null&&p<= prec(ss.top.data )&& (char)ss.top.data!='(') {
+					 
+					 s+=(char)ss.top.data; s+=' ';   ss.pop(); 
+					
+				 } else break;
+				 }
+				
+				 }
+				 ss.push(a[i]);  
+			 }
+			 else  if (a[i]==')'){
+				Stack.Node current=ss.top;
+				while (current !=null) {
+					if ((char)current.data!='(') {
+					char temp=(char)ss.pop(); s=s+temp; s+=' '; }
+					else { ss.pop(); break;}
+					current=current.next;
+				}
+			}
+			 else if (a[i]!='.') { 
+				 if (Character.isDigit(a[i])) s+=a[i];  
+				 else s+=(int)a[i];
+				
+
+					  s+=' ';
+					  
+				 
+			 }
+			 
+			
+		}
+		 Stack.Node current=ss.top;
+		 while (current!=null) {
+			if ((char)current.data!=')'&&(char)current.data!='(') {s+=(char)current.data; s+=' '; }
+			 current=current.next;
+		 }
+		 System.out.println("the postfix expression is :"+s);
+		
+		
+				
+				
+			 return s;
+		}
+	//////
+	/**
+	 * it check if the expression is valid or not 
+	 * @param s
+	 * 		represents the expression
+	 * @return 
+	 * 		1 if valid , 0 if not valid
+	 */
+	public int check(String s) {
+		char[] a =s.toCharArray();
+		Stack st =new Stack();
+		for (int i=0;i<a.length;i++) {
+			if (a[i]=='(') st.push(a[i]);
+			else if (a[i]==')') st.pop();
+		}int t=1;
+		for (int i=0;i<a.length-1;i++)
+			if (a[i]=='/'&&Character.getNumericValue(a[i+1])==0)
+				t=0;
+		for (int i=0;i<a.length-1;i++) {
+			if (a[i]=='-'&&a[i+1]=='*') t=0;
+			if (a[i]=='-'&&a[i+1]=='/') t=0;
+			if (a[i]=='+'&&a[i+1]=='*') t=0;
+			if (a[i]=='+'&&a[i+1]=='/') t=0;
+			if (a[i]=='*'&&a[i+1]=='/') t=0;
+			if (a[i]=='/'&&a[i+1]=='*') t=0;
+		
+		}
+		
+			
+		
+		
+		if (st.size()!=0||t==0) return 0;
+		else return 1;
+	}
+
+}
